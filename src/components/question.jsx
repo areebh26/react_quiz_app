@@ -1,7 +1,8 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useState } from 'react'
 
 function Question({questions}) {
     if (!questions || questions.length === 0) return null;
+    let [resultBox,setResultBox]=useState(false);
     function handleClick(e){
         let answer = questions[state.index].correctOptions;
         let userSelection = e.target.value;
@@ -17,6 +18,8 @@ function Question({questions}) {
             dispatch({type:"answerFalse"})
         }
 
+      
+
 
 
     }
@@ -28,6 +31,7 @@ function Question({questions}) {
                  points:state.points+5,
                  question:questions[state.index+1].question,
                  options:questions[state.index+1].options,
+                 answer:questions[state.index+1].correctOption,
                  index:state.index+1
             }
 
@@ -48,6 +52,7 @@ function Question({questions}) {
         points : 0,
         question : questions[0].question,
         options : questions[0].options,
+        answer:questions[0].correctOption,
         isCorrect : false,
         isWrong : false
         
@@ -64,13 +69,19 @@ function Question({questions}) {
         <p>Question {state.questionNumber}/{questions.length}</p>
         <p>{state.points}/{totalPoints} Points</p>
         <h3>{state.question}</h3>
-        {state.options.map((option,index)=>(<button key={index} onClick={}>{option}</button>))}
+        {resultBox ? state.options.map((option,index)=>{(<div key={index}>{option} {index===state.correctOption ? "✅" : "❌"}</div>)}) : state.options.map((option,index)=>(<button key={index} onClick={}>{option}</button>)) }
+        
         {state.isCorrect && (<p>Your answer is Correct</p>)}
         {state.isWrong && (<p>Your answer is wrong</p>)}
-        <button onClick={()=>(dispatch({type:"update"}))} >Next</button>
+        <button onClick={()=>{
+            dispatch({type:"update"});
+            setResultBox(false);
+
+        }} >Next</button>
 
     </div>
   )
 }
 
 export default Question
+
