@@ -1,87 +1,91 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useState } from "react";
 
-function Question({questions}) {
-    if (!questions || questions.length === 0) return null;
-    let [resultBox,setResultBox]=useState(false);
-    function handleClick(e){
-        let answer = questions[state.index].correctOptions;
-        let userSelection = e.target.value;
-        let userSelectionNumber ;
-        for(let x = 0 ; x < state.options.length ; x++){
-            if(userSelection===state.options[x]){
-                userSelectionNumber=x;
-            }
-        }
-        if(userSelectionNumber===answer){
-            dispatch({type:"answerTrue"})
-        }else{
-            dispatch({type:"answerFalse"})
-        }
-
-      
-
-
-
+function Question({ questions }) {
+  if (!questions || questions.length === 0) return null;
+  let [resultBox, setResultBox] = useState(false);
+  function handleClick(e) {
+    let answer = questions[state.index].correctOptions;
+    let userSelection = e.target.value;
+    let userSelectionNumber;
+    for (let x = 0; x < state.options.length; x++) {
+      if (userSelection === state.options[x]) {
+        userSelectionNumber = x;
+      }
     }
-    function reducer(state,action){
-        switch(action.type){
-            case "update" : return {
-                ...state,
-                 questionNumber:state.questionNumber+1,
-                 points:state.points+5,
-                 question:questions[state.index+1].question,
-                 options:questions[state.index+1].options,
-                 answer:questions[state.index+1].correctOption,
-                 index:state.index+1
-            }
-
-            case "answerTrue" : return {
-                ...state,
-                isCorrect : true
-            }
-
-            case "answerFalse" : return {
-                ...state,
-                isWrong : true
-            }
-        }
+    if (userSelectionNumber === answer) {
+      dispatch({ type: "update" });
+      setResultBox(true);
+    } else {
+      setResultBox(true);
     }
-    let initialState={
-        index:0,
-        questionNumber : 1,
-        points : 0,
-        question : questions[0].question,
-        options : questions[0].options,
-        answer:questions[0].correctOption,
-        isCorrect : false,
-        isWrong : false
+  }
+  function reducer(state, action) {
+    switch (action.type) {
+      case "next":
         
-        
-    };
-    let totalPoints = 0 ; 
-    questions.forEach(element => {
-        totalPoints+= element.points;
-    });
-    let [state,dispatch]=useReducer(reducer , initialState);
+        return {
+          ...state,
+          questionNumber: state.questionNumber + 1,
+          question: questions[state.index + 1].question,
+          options: questions[state.index + 1].options,
+          answer: questions[state.index + 1].correctOption,
+          index: state.index + 1,
+        };
+
+      case "update":
+        return {
+          ...state,
+          points: state.points + questions[state.index].points,
+        };
+    }
+  }
+  let initialState = {
+    index: 0,
+    questionNumber: 1,
+    points: 0,
+    question: questions[0].question,
+    options: questions[0].options,
+    answer: questions[0].correctOption,
+  };
+  let totalPoints = 0;
+  questions.forEach((element) => {
+    totalPoints += element.points;
+  });
+  let [state, dispatch] = useReducer(reducer, initialState);
   return (
     <div>
-        <progress></progress>
-        <p>Question {state.questionNumber}/{questions.length}</p>
-        <p>{state.points}/{totalPoints} Points</p>
-        <h3>{state.question}</h3>
-        {resultBox ? state.options.map((option,index)=>{(<div key={index}>{option} {index===state.correctOption ? "✅" : "❌"}</div>)}) : state.options.map((option,index)=>(<button key={index} onClick={}>{option}</button>)) }
-        
-        {state.isCorrect && (<p>Your answer is Correct</p>)}
-        {state.isWrong && (<p>Your answer is wrong</p>)}
-        <button onClick={()=>{
-            dispatch({type:"update"});
+      <progress></progress>
+      <p>
+        Question {state.questionNumber}/{questions.length}
+      </p>
+      <p>
+        {state.points}/{totalPoints} Points
+      </p>
+      <h3>{state.question}</h3>
+      {resultBox
+        ? state.options.map((option, index) => {
+             
+           return  <div key={index}>
+              {option} {index === state.answer ? "✅" : "❌"}
+            </div>;
+          })
+        : state.options.map((option, index) => (
+            <button key={index} onClick={handleClick}>
+              {option}
+            </button>
+          ))}
+      {resultBox && state.index!==questions.length - 1 && (
+        <button
+          onClick={() => {
+            dispatch({ type: "next" });
             setResultBox(false);
-
-        }} >Next</button>
-
+          }}
+        >
+          Next
+        </button>
+      )}
     </div>
-  )
+  );
 }
 
-export default Question
-
+export default Question;
