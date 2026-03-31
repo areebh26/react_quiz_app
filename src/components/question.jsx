@@ -6,7 +6,7 @@ function Question({ questions,setCompleted,setScores }) {
   function handleClick(e) {
     let answer = questions[state.index].correctOption;
     let userSelection = e.target.value;
-    console.log(userSelection);
+    
     
     let userSelectionNumber;
     for (let x = 0; x < state.options.length; x++) {
@@ -20,7 +20,7 @@ function Question({ questions,setCompleted,setScores }) {
       setScores((prev)=>(
         {
           ...prev,
-          userScore:state.points
+          userScore:state.points + questions[state.index].points
         }
       ));
     } else {
