@@ -1,4 +1,5 @@
 import React, {  useReducer, useState } from "react";
+import Timer from "./timer";
 
 function Question({ questions,setCompleted,setScores }) {
   if (!questions || questions.length === 0) return null;
@@ -94,6 +95,7 @@ function Question({ questions,setCompleted,setScores }) {
           Next
         </button>
       )}
+      <Timer></Timer>
       {resultBox && state.index==questions.length - 1 && (<div>
         <p>Quiz Completed !</p>
         <button onClick={()=>{
