@@ -1,11 +1,13 @@
-import React, { useReducer, useState } from "react";
+import React, {  useReducer, useState } from "react";
 
-function Question({ questions }) {
+function Question({ questions,setCompleted,setScores }) {
   if (!questions || questions.length === 0) return null;
   let [resultBox, setResultBox] = useState(false);
   function handleClick(e) {
-    let answer = questions[state.index].correctOptions;
+    let answer = questions[state.index].correctOption;
     let userSelection = e.target.value;
+    console.log(userSelection);
+    
     let userSelectionNumber;
     for (let x = 0; x < state.options.length; x++) {
       if (userSelection === state.options[x]) {
@@ -15,6 +17,12 @@ function Question({ questions }) {
     if (userSelectionNumber === answer) {
       dispatch({ type: "update" });
       setResultBox(true);
+      setScores((prev)=>(
+        {
+          ...prev,
+          userScore:state.points
+        }
+      ));
     } else {
       setResultBox(true);
     }
@@ -70,7 +78,8 @@ function Question({ questions }) {
             </div>;
           })
         : state.options.map((option, index) => (
-            <button key={index} onClick={handleClick}>
+            
+            <button key={index} value={option} onClick={handleClick}>
               {option}
             </button>
           ))}
@@ -79,11 +88,25 @@ function Question({ questions }) {
           onClick={() => {
             dispatch({ type: "next" });
             setResultBox(false);
+            
           }}
         >
           Next
         </button>
       )}
+      {resultBox && state.index==questions.length - 1 && (<div>
+        <p>Quiz Completed !</p>
+        <button onClick={()=>{
+          setScores((prev)=>(
+            {
+              ...prev,
+              totalScore:totalPoints
+            }
+          ))
+          setCompleted(true)
+        }}>Show Result</button>
+      </div>)}
+
     </div>
   );
 }
