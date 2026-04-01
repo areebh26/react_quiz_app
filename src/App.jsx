@@ -11,7 +11,7 @@ function App() {
     userScore:0,
     totalScore:0
   });
-  let [time,setTime] = useState(120);
+  let [time,setTime] = useState(10);
   useEffect(()=>{
     async function getData(){
       let res = await fetch("http://localhost:9000/questions");
