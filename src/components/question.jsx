@@ -1,9 +1,21 @@
-import React, {  useReducer, useState } from "react";
+import React, {  useEffect, useReducer, useState } from "react";
 import Timer from "./timer";
 
 function Question({ questions,setCompleted,setScores,time,setTime }) {
-  if (!questions || questions.length === 0) return null;
+  let totalPoints = 0;
+  questions.forEach((element) => {
+    totalPoints += element.points;
+  });
+ 
   let [resultBox, setResultBox] = useState(false);
+  useEffect(()=>{
+    setScores((prev)=>(
+            {
+              ...prev,
+              totalScore:totalPoints
+            }
+          ))
+  });
   function handleClick(e) {
     let answer = questions[state.index].correctOption;
     let userSelection = e.target.value;
@@ -56,10 +68,7 @@ function Question({ questions,setCompleted,setScores,time,setTime }) {
     options: questions[0].options,
     answer: questions[0].correctOption,
   };
-  let totalPoints = 0;
-  questions.forEach((element) => {
-    totalPoints += element.points;
-  });
+  
   let [state, dispatch] = useReducer(reducer, initialState);
   return (
     <div>
@@ -99,12 +108,6 @@ function Question({ questions,setCompleted,setScores,time,setTime }) {
       {resultBox && state.index==questions.length - 1 && (<div>
         <p>Quiz Completed !</p>
         <button onClick={()=>{
-          setScores((prev)=>(
-            {
-              ...prev,
-              totalScore:totalPoints
-            }
-          ))
           setCompleted(true)
         }}>Show Result</button>
       </div>)}

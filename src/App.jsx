@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Question from "./components/question";
 import ResultPage from "./components/resultPage";
+import ResultPageWhenTimeOver from "./components/resultPageWhenTimeOver";
 
 function App() {
   let [questions,setQuestions] = useState([]);
@@ -29,7 +30,7 @@ function App() {
       <h2>Welcome to react Quiz !</h2>
       <h3>15 Questions to test your react mastery</h3>
       {!open && (<button onClick={()=>(setOpen(true))}>Lets Start</button>)}
-      {open && (isCompleted ? (<ResultPage userScore={scores.userScore} totalScore={scores.totalScore}></ResultPage>) : (<Question questions={questions} setCompleted={setIsCompleted} setScores={setScores} time={time} setTime={setTime}></Question>))}
+      {time==0 ? (<ResultPageWhenTimeOver userScore={scores.userScore} totalScore={scores.totalScore}></ResultPageWhenTimeOver>) : open && (isCompleted ? (<ResultPage userScore={scores.userScore} totalScore={scores.totalScore}></ResultPage>) : questions.length==0 ? <p>Loading Questions</p> : (<Question questions={questions} setCompleted={setIsCompleted} setScores={setScores} time={time} setTime={setTime}></Question>))}
       
 
       
