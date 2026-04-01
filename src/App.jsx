@@ -10,6 +10,7 @@ function App() {
     userScore:0,
     totalScore:0
   });
+  let [time,setTime] = useState(120);
   useEffect(()=>{
     async function getData(){
       let res = await fetch("http://localhost:9000/questions");
@@ -28,7 +29,7 @@ function App() {
       <h2>Welcome to react Quiz !</h2>
       <h3>15 Questions to test your react mastery</h3>
       {!open && (<button onClick={()=>(setOpen(true))}>Lets Start</button>)}
-      {open && (isCompleted ? (<ResultPage userScore={scores.userScore} totalScore={scores.totalScore}></ResultPage>) : (<Question questions={questions} setCompleted={setIsCompleted} setScores={setScores}></Question>))}
+      {open && (isCompleted ? (<ResultPage userScore={scores.userScore} totalScore={scores.totalScore}></ResultPage>) : (<Question questions={questions} setCompleted={setIsCompleted} setScores={setScores} time={time} setTime={setTime}></Question>))}
       
 
       

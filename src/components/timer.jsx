@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
-function Timer() {
-    let [time,setTime] = useState(120);
+function Timer({time,setTime}) {
+    
     useEffect(()=>{
         if(time===0){return}
         let n = setInterval(() => {

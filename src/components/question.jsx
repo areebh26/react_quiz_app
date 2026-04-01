@@ -1,7 +1,7 @@
 import React, {  useReducer, useState } from "react";
 import Timer from "./timer";
 
-function Question({ questions,setCompleted,setScores }) {
+function Question({ questions,setCompleted,setScores,time,setTime }) {
   if (!questions || questions.length === 0) return null;
   let [resultBox, setResultBox] = useState(false);
   function handleClick(e) {
@@ -95,7 +95,7 @@ function Question({ questions,setCompleted,setScores }) {
           Next
         </button>
       )}
-      <Timer></Timer>
+      <Timer time={time} setTime={setTime}></Timer>
       {resultBox && state.index==questions.length - 1 && (<div>
         <p>Quiz Completed !</p>
         <button onClick={()=>{
