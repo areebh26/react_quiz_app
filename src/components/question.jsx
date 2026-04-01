@@ -71,43 +71,48 @@ function Question({ questions,setCompleted,setScores,time,setTime }) {
   
   let [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <div>
-      <progress></progress>
-      <p>
-        Question {state.questionNumber}/{questions.length}
-      </p>
-      <p>
-        {state.points}/{totalPoints} Points
-      </p>
-      <h3>{state.question}</h3>
-      {resultBox
-        ? state.options.map((option, index) => {
+    <div className="question-container">
+      <div className="progress-section">
+        <progress className="progress-bar" value={state.questionNumber} max={questions.length}></progress>
+      </div>
+      <div className="question-info">
+        <span>Question {state.questionNumber}/{questions.length}</span>
+        <span>{state.points}/{totalPoints} points</span>
+      </div>
+      <h3 className="question-text">{state.question}</h3>
+      <div className="options-list">
+        {resultBox
+          ? state.options.map((option, index) => {
              
-           return  <div key={index}>
-              {option} {index === state.answer ? "✅" : "❌"}
-            </div>;
-          })
-        : state.options.map((option, index) => (
-            
-            <button key={index} value={option} onClick={handleClick}>
-              {option}
-            </button>
-          ))}
-      {resultBox && state.index!==questions.length - 1 && (
-        <button
-          onClick={() => {
-            dispatch({ type: "next" });
-            setResultBox(false);
-            
-          }}
-        >
-          Next
-        </button>
-      )}
-      <Timer time={time} setTime={setTime}></Timer>
-      {resultBox && state.index==questions.length - 1 && (<div>
+            return  <div key={index} className={`answer-option ${index === state.answer ? "answer-correct" : "answer-wrong"}`}>
+                <span>{option}</span> <span>{index === state.answer ? "✅" : "❌"}</span>
+              </div>;
+            })
+          : state.options.map((option, index) => (
+              
+              <button key={index} value={option} onClick={handleClick} className="option-btn">
+                {option}
+              </button>
+            ))}
+      </div>
+      <div className="question-footer">
+        <Timer time={time} setTime={setTime}></Timer>
+        {resultBox && state.index!==questions.length - 1 && (
+          <button
+            className="btn-next"
+            onClick={() => {
+              dispatch({ type: "next" });
+              setResultBox(false);
+              
+            }}
+          >
+            Next
+          </button>
+        )}
+      </div>
+      {resultBox && state.index==questions.length - 1 && (<div className="quiz-completed">
         <p>Quiz Completed !</p>
-        <button onClick={()=>{
+        <button className="btn-result" onClick={()=>{
           setCompleted(true)
         }}>Show Result</button>
       </div>)}

@@ -21,10 +21,8 @@ function Timer({time,setTime}) {
         return timeInMin + " : " + remainingSec;
     }
   return (
-    <div>
-        <div>
-            {displayTime()}
-        </div>
+    <div className="timer">
+        {displayTime()}
     </div>
   )
 }

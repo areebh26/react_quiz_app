@@ -25,17 +25,19 @@ function App() {
   
   
   return (
-    <div>
-      <h1>The React Quiz</h1>
-      <h2>Welcome to react Quiz !</h2>
-      <h3>15 Questions to test your react mastery</h3>
-      {!open && (<button onClick={()=>(setOpen(true))}>Lets Start</button>)}
-      {time==0 ? (<ResultPageWhenTimeOver userScore={scores.userScore} totalScore={scores.totalScore}></ResultPageWhenTimeOver>) : open && (isCompleted ? (<ResultPage userScore={scores.userScore} totalScore={scores.totalScore}></ResultPage>) : questions.length==0 ? <p>Loading Questions</p> : (<Question questions={questions} setCompleted={setIsCompleted} setScores={setScores} time={time} setTime={setTime}></Question>))}
-      
-
-      
-      
-      
+    <div className="app">
+      <header className="app-header">
+        <img src="/favicon.svg" alt="React Logo" className="app-logo" />
+        <h1 className="app-title">The React Quiz</h1>
+      </header>
+      {!open && !isCompleted && time!==0 && (
+        <div className="welcome-text">
+          <h2>Welcome to The React Quiz!</h2>
+          <h3>15 questions to test your React mastery</h3>
+        </div>
+      )}
+      {!open && (<button className="btn-start" onClick={()=>(setOpen(true))}>Let's start!</button>)}
+      {time==0 ? (<ResultPageWhenTimeOver userScore={scores.userScore} totalScore={scores.totalScore}></ResultPageWhenTimeOver>) : open && (isCompleted ? (<ResultPage userScore={scores.userScore} totalScore={scores.totalScore}></ResultPage>) : questions.length==0 ? <p className="loading-text">Loading Questions</p> : (<Question questions={questions} setCompleted={setIsCompleted} setScores={setScores} time={time} setTime={setTime}></Question>))}
     </div>
   )
 }
